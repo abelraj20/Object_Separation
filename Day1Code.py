@@ -36,12 +36,14 @@ ax[1].imshow(result)
 ax[1].set_title("Masked Image")
 ax[1].axis("off")
 
+#convert to hsl and hsv
 img_hls = cv2.cvtColor(result, cv2.COLOR_RGB2HLS)
 img_hsv = cv2.cvtColor(result, cv2.COLOR_RGB2HSV)
 
 # Extract HLS and HSV values only for non-masked pixels
 mask_nonzero = mask > 0  # Boolean mask for valid pixels
 
+#convert only object pixels
 hue_hls = img_hls[:, :, 0][mask_nonzero]
 luminance = img_hls[:, :, 1][mask_nonzero]
 saturation_hls = img_hls[:, :, 2][mask_nonzero]
@@ -50,7 +52,7 @@ hue_hsv = img_hsv[:, :, 0][mask_nonzero]
 saturation_hsv = img_hsv[:, :, 1][mask_nonzero]
 value = img_hsv[:, :, 2][mask_nonzero]
 
-# Flatten channels
+# flatten channels
 hue_hls_flat = hue_hls.flatten()
 luminance_flat = luminance.flatten()
 saturation_hls_flat = saturation_hls.flatten()
@@ -61,13 +63,13 @@ value_flat = value.flatten()
 
 fig, axes = plt.subplots(2, 1, figsize=(12, 10))
 
-# HSL: Hue vs Lightness (after removing outliers)
+# hsl plot
 axes[0].scatter(hue_hls_flat, luminance_flat, cmap='hsv', alpha=0.5, marker='.')
 axes[0].set_title('HSL: Hue vs Lightness')
 axes[0].set_xlabel('Hue')
 axes[0].set_ylabel('Lightness')
 
-# HSV: Hue vs Value (after removing outliers)
+# hsv plot
 axes[1].scatter(hue_hsv_flat, value_flat, cmap='hsv', alpha=0.5, marker='.')
 axes[1].set_title('HSV: Hue vs Value')
 axes[1].set_xlabel('Hue')
